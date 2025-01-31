@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="index.css" />
+    <title>Namaste React</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <!--//// creating elements in HTML directely ////-->
+    <!-- <h1 id="heading">Hello world from HTML!</h1> -->
+
+    <!--//// Creating element using JavaScript ////-->
+    <!-- <script>
+      const heading1 = document.createElement("h2");
+      heading1.innerHTML = "Hello world from JavaScript!";
+
+      const root1 = document.getElementById("root");
+      root1.appendChild(heading1);
+    </script> -->
+
+    <!-- Thisis one way of importing React into your project directely from CDN React website -->
+    <script
+      crossorigin
+      src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+
+    <!--//// This is creating element using React ////-->
+    <!-- <script>
+      const heading = React.createElement("h1", {}, "Hello world from react!");
+      const root = ReactDOM.createRoot(document.getElementById("root"));
+      root.render(heading);      
+    </script> -->
+
+    <!-- {} this in  React.createElemnt is used to give the elements or tags and attribute like class or id -->
+
+    <script src="app.js"></script>
+  </body>
+</html>
