@@ -29,9 +29,9 @@ const jsxHeading = (
 ); // This created Object.
 console.log(jsxHeading);
 
-const root1 = ReactDOM.createRoot(document.getElementById("root"));
+// const root1 = ReactDOM.createRoot(document.getElementById("root"));
 
-root1.render(jsxHeading); // render converts object into HTML element.
+root.render(jsxHeading); // render converts object into HTML element.
 
 // JS Engine does not understands the JSX that is this: const jsxHeading = <h1 id="heading">Namaste React using JSX</h1>. It simply throw the error saying the '<' unexpected tocken when you try to run this command inside console in browser. So how the code is still working and we are geting the output? It is because of parcel, parcel doing this for us, it transpiled the code before it reaches the JS engine. But parcel dont do that alone it  is Babel. It is babel's job to convert the code which react/Js engine/browser understands.
 //In the background JSX converts the code into react element and it creates the object which is then converted into HTMl using render method. so JSX is nothing but the React element. this converting from JSX to React.createElement is done by babel.
@@ -91,8 +91,8 @@ const HeadingComponent2 = () => (
 
 // <Title />, <Title></Title>, {Title()} this all are same.
 
-const root2 = ReactDOM.createRoot(document.getElementById("root"));
-root2.render(<HeadingComponent2 />); // This is how we render a functional component on to the page.
+// const root2 = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<HeadingComponent2 />); // This is how we render a functional component on to the page.
 
 /////////////////////////////////////////////////////////////////
 //////// Episiode 1: Inception /////////////
