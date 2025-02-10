@@ -19,8 +19,10 @@
     "process": "^0.11.10"
   },
   "dependencies": {
+    "node": "^23.7.0",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "react-router-dom": "^6.22.0"
   },
   "browserslist": [
     "last 2 versions"
