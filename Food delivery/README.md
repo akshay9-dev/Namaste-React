@@ -79,3 +79,16 @@ When ever the state vriable updated react keep eye on it and triggers differ alg
    In this the routing is handled on the browser side itself without making a netwrok call to the server.
 2. Servr Side Routing:
    In this we make make a request to the server/a network call to the server and the server returns the new HTML pge.
+ 
+ 
+ 
+ 
+ # Redux Toolkit
+ - Install @reduxjs/toolkit and react-redux
+ - Build our store
+ - Connect our store to app
+ - Create slice (cartSlice)
+ - Dispatch(action)
+ - Selector
+ 
+

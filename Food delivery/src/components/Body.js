@@ -1,7 +1,9 @@
-import RestaurantCard from "./RestaurantCard.js";
-import { useState, useEffect } from "react";
+import RestaurantCard, { withPromotedLabel } from "./RestaurantCard.js";
+import { useState, useEffect, useContext } from "react";
 import Shimmer from "./Shimmer.js";
 import { Link } from "react-router-dom";
+import useOnlineStatus from "../utils/useOnlineStatus.js";
+import UserContext from "../utils/UserContext.js";
 
 // not using key (not acceptable) < indes as key (not recommanded) < unique id (best practice)
 
@@ -19,75 +21,145 @@ const Body = () => {
 
   const [searchText, setSearchText] = useState(" ");
 
+  const RestaurantCardPromoted = withPromotedLabel(RestaurantCard);
+
+  console.log(ListOfRestaurants);
+
   useEffect(() => {
     fetchData();
   }, []);
 
+  /*  
   const fetchData = async () => {
     const data = await fetch(
       "https://www.swiggy.com/dapi/restaurants/list/v5?lat=18.5204303&lng=73.8567437&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING"
     );
 
     const json = await data.json();
+    console.log(json);
 
     console.log(json);
     setListOfRestaurant(
-      json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants
+      json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants || []
     );
     setFilteredRestaurant(
-      json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants
+      json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants || []
     );
   };
+*/
+
+  const fetchData = async () => {
+    try {
+      const response = await fetch(
+        "https://www.swiggy.com/dapi/restaurants/list/v5?lat=18.5204303&lng=73.8567437&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING"
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const json = await response.json();
+      // console.log("Full API Response: ", json); // Check if data is coming correctly
+
+      // Debugging: Check if the specific property exists
+      // console.log(
+      //   "Fetched Restaurants: ",
+      //   json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle
+      //     ?.restaurants
+      // );
+
+      setListOfRestaurant(
+        json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle
+          ?.restaurants || []
+      );
+      setFilteredRestaurant(
+        json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle
+          ?.restaurants || []
+      );
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  const onlineStatus = useOnlineStatus();
+
+  if (onlineStatus === false)
+    return (
+      <h1>
+        {" "}
+        Looks like you are offline!!! Please check your internet connection
+      </h1>
+    );
+
+  const { loggedInUser, setUserName } = useContext(UserContext);
+
   // Conditional rendering: A rendering based on some condition called as contional rendering.
   //   if (ListOfRestaurants.length === 0) {
   //     return <Shimmer />;
   //   } // We can write it in return as well like this: ListOfRestaurants.length === 0 ? <Shimmer /> :
 
-  return ListOfRestaurants.length === 0 ? (
+  return ListOfRestaurants.length === 0 || !ListOfRestaurants ? (
     <Shimmer /> // Conditional rendering we used ternary operator(?) here..
   ) : (
     <div className="body">
-      <div className="filter">
-        <input
-          type="text"
-          className="search-box"
-          value={searchText}
-          onChange={(e) => {
-            console.log(e);
-            setSearchText(e.target.value);
-          }} // fir search text
-        />
-        <button
-          onClick={() => {
-            //Filter the restaurant cards and update the UI.
-            // I will need search text
-            console.log(searchText);
+      <div className="filter flex">
+        <div className="search m-4 p-4">
+          <input
+            type="text"
+            className="border border-solid border-black"
+            value={searchText}
+            onChange={(e) => {
+              console.log(e);
+              setSearchText(e.target.value);
+            }} // fir search text
+          />
+          <button
+            className="px-4 py-2 bg-green-100 m-4 rounded-lg"
+            onClick={() => {
+              //Filter the restaurant cards and update the UI.
+              // I will need search text
+              console.log(searchText);
 
-            const filteredRestaurant = ListOfRestaurants.filter((res) =>
-              res.info.name.toLowerCase().includes(searchText.toLowerCase())
-            );
-            setFilteredRestaurant(filteredRestaurant);
-          }}>
-          Search
-        </button>
-        <button
-          className="filter-btn"
-          onClick={() => {
-            const filterList = ListOfRestaurants.filter(
-              (res) => res.info.avgRatingString > 4
-            );
-            setListOfRestaurant(filterList); //  we pass the filteredList to setListOfRestaurant. for upadating the array that is ListOfRestaurant. And when we click the list will filter the restaurant.
-          }}>
-          Top Rated Restaurants
-        </button>
+              const filteredRestaurant = ListOfRestaurants.filter((res) =>
+                res.info.name.toLowerCase().includes(searchText.toLowerCase())
+              );
+              setFilteredRestaurant(filteredRestaurant);
+            }}>
+            Search
+          </button>
+        </div>
+
+        <div className="search m-4 p-4 flex items-center">
+          <button
+            className="px-4 py-2 bg-gray-100 rounded-lg"
+            onClick={() => {
+              const filterList = ListOfRestaurants.filter(
+                (res) => res.info.avgRatingString > 4
+              );
+              setListOfRestaurant(filterList); //  we pass the filteredList to setListOfRestaurant. for upadating the array that is ListOfRestaurant. And when we click the list will filter the restaurant.
+            }}>
+            Top Rated Restaurants
+          </button>
+        </div>
+        <div>
+          <label>UserName :</label>
+          <input
+            className="border border-black mt-11 p-2"
+            value={loggedInUser}
+            onChange={(e) => setUserName(e.target.value)}></input>
+        </div>
       </div>
-      <div className="res-container">
+      <div className="res-container flex flex-wrap">
         {
           filteredRestaurant.map((restaurant) => (
             <Link
               key={restaurant.info.id}
               to={"/restaurants/" + restaurant.info.id}>
-              <RestaurantCard resData={restaurant} />
+              {restaurant.info.promoted ? (
+                <RestaurantCardPromoted resData={restaurant} />
+              ) : (
+                <RestaurantCard resData={restaurant} />
+              )}
             </Link>
           ))
           // This above map method iterated over each object of restaurant inside resList array and maps it. Remember always that whenevey you using map method that i whenever your looping on to anything you have to always give a key over here. Why it is important? Becauses when suppose we dont provide unique key to the component the when a new component is added, card in this case then react will reload/render/updates all the cmponents. and if the unique key or id is provided then react only updates/render/reload that component. it will be really time consuming when we have more than 100 cards/components. remember the key should be unique. React uniquely identifies the component when key is provided.

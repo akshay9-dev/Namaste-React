@@ -5,7 +5,7 @@ import React from "react";
 class UserClass extends React.Component {
   constructor(props) {
     super(props);
-    console.log(props); // This will display the props that we prvided.
+    // console.log(props); // This will display the props that we prvided.
 
     // Creating  a state variable in class based component.
     this.state = {
@@ -28,7 +28,7 @@ class UserClass extends React.Component {
       userInfo: json,
     });
 
-    console.log(json);
+    // console.log(json);
   }
 
   // this is the way to import props in class based component.

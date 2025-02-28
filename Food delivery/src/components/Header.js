@@ -1,6 +1,9 @@
 import { LOGO_URL } from "../utils/constants";
-import { useState, useEffect } from "react";
+import { useState, useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
+import useOnlineStatus from "../utils/useOnlineStatus";
+import UserContext from "../utils/UserContext";
+import { useSelector } from "react-redux";
 
 const Header = () => {
   const [btnNameReact, setBtnNameReact] = useState("Login");
@@ -21,24 +24,37 @@ useEffect(() => {
   console.log("useEffect Called");
 }, [count]);
 */
+  const onlineStatus = useOnlineStatus();
+
+  const { loggedInUser } = useContext(UserContext);
+
+  // Subscribing to the store using selector
+  const cartItems = useSelector((store) => store.cart.items);
+  console.log(cartItems);
 
   return (
-    <div className="header">
+    <div className="flex justify-between bg-pink-100 shadow-2xl m-2 sm:bg-amber-200 lg:bg-green-50">
       <div className="logo-container">
-        <img className="logo" src={LOGO_URL} />
+        <img className="w-40" src={LOGO_URL} />
       </div>
-      <div className="nav-items">
-        <ul>
-          <li>
+      <div className="flex items-center">
+        <ul className="flex p-4 m-4">
+          <li className="px-4">Online Status: {onlineStatus ? "✅" : "🔴"}</li>
+          <li className="px-4">
             <Link to="/body">Home</Link>
           </li>
-          <li>
+          <li className="px-4">
             <Link to="/about">About Us</Link>
           </li>
-          <li>
+          <li className="px-4">
             <Link to="/contact">Contact US</Link>
           </li>
-          <li>Cart</li>
+          <li className="px-4">
+            <Link to="/grocery"> Grocery</Link>
+          </li>
+          <li className="px-4 font-bold">
+            <Link to="/cart">Cart🛒- ({cartItems.length} items)</Link>
+          </li>
           <button
             className="login"
             onClick={() => {
@@ -48,6 +64,7 @@ useEffect(() => {
             }}>
             {btnNameReact}
           </button>
+          <li className="px-4 font-bold">{loggedInUser}</li>
         </ul>
       </div>
     </div>
