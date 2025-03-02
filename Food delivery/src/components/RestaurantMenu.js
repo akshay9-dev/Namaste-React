@@ -14,7 +14,7 @@ const RestaurantMenu = () => {
 
   console.log("INFO:", resInfo);
 
-  const [showIndex, setShowIndex] = useState(0);
+  const [showIndex, setShowIndex] = useState(null);
 
   if (resInfo === null) return <Shimmer />;
 
@@ -39,10 +39,9 @@ const RestaurantMenu = () => {
   //   if (resInfo === null) return <Shimmer /> ; // This we can write it in return as well. If resInfo === null return <shimmer/> else return the below code.( ? ____ : this is turnary operator)
 
   return (
-    <div className="text-center">
+    <div className="text-center ">
       <h1 className="font-bold my-6 text-2xl">{name}</h1>
-      <p className="font-bold text-lg">
-        {cuisines.join(", ")} -{costForTwoMessage}
+      <p>
       </p>
       {/* {categories} */}
       {categories.map((category, index) => (

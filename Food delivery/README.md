@@ -92,3 +92,19 @@ When ever the state vriable updated react keep eye on it and triggers differ alg
  - Selector
  
 
+# Types of Testing(developer)
+- Unit Testing: You test your react component in isolation.( testing one unit/component)
+- Integration Testing
+- End to End testing(e2e testing)
+
+# Setting up testing in our app:
+- Install react testing library
+- Install jest
+- install Babel dependencies
+- configure Babel
+- configure parcel config file to disable default babel transpilation.
+- Jest configuration: npx jest --init
+- Install Jsdon Library
+- Install @babel/preset-react - to make JSX work in test cases
+- Include @babel/preset-react inside my babel config
+- inatall @testing-Library/jest-dom
