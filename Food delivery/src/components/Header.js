@@ -35,7 +35,7 @@ useEffect(() => {
   return (
     <div className="flex justify-between items-center shadow-2xl p-2 bg-gray-50 px-30">
       <div className="logo-container">
-        <img className="w-20" src="/img/design.jpg" alt="App Logo" />
+        <img className="w-40" src={LOGO_URL} alt="App Logo" />
       </div>
       <div className="flex items-center">
         <ul className="flex p-4 m-4 gap-6">
